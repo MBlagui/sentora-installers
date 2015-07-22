@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 SENTORA_UPDATER_VERSION="1.0.2"
+PANEL_PATH="/etc/sentora"
+PANEL_DATA="/var/sentora"
 
 # Ensure the OS is compatible with the launcher
 if [ -f /etc/centos-release ]; then
@@ -18,7 +20,6 @@ ARCH=$(uname -m)
 
 echo "Detected : $OS  $VER  $ARCH"
 
-
 ### Ensure that sentora is installed
 if [ -d /etc/sentora ]; then
     echo "Found Sentora, processing"
@@ -27,12 +28,7 @@ else
     exit 1
 fi
 
-
 # FTP Patch
-
-PANEL_PATH="/etc/sentora"
-PANEL_DATA="/var/sentora"
-
 cd /tmp/
 wget -O hotfix_controller.ext.php "https://raw.githubusercontent.com/sentora/sentora-core/b176df0e29e52e14d778ca6cb47c5765cf3c4953/modules/ftp_management/code/controller.ext.php"
 mv /etc/sentora/panel/modules/ftp_management/code/controller.ext.php controller.ext.php_backup
@@ -41,6 +37,8 @@ chown root:root /etc/sentora/panel/modules/ftp_management/code/controller.ext.ph
 chmod 777 /etc/sentora/panel/modules/ftp_management/code/controller.ext.php
 
 # CGI Patch
+disable_file() {
+    mv "$1" "$1_disabled_by_sentora" &> /dev/null
 
 if [[ "$OS" = "CentOs" ]]; then
     HTTP_CONF_PATH="/etc/httpd/conf/httpd.conf"
