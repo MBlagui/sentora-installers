@@ -53,6 +53,7 @@ if [[ "$OS" = "CentOs" ]]; then
         disable_file /etc/httpd/conf.modules.d/01-cgi.conf
         disable_file /etc/httpd/conf.modules.d/00-lua.conf
         disable_file /etc/httpd/conf.modules.d/00-dav.conf
+        Service httpd restart
     else
         disable_file /etc/httpd/conf.d/welcome.conf
         disable_file /etc/httpd/conf.d/webalizer.conf
@@ -62,14 +63,14 @@ if [[ "$OS" = "CentOs" ]]; then
 	    sed -i "s|LoadModule dav_module modules|#LoadModule dav_module modules|" "$HTTP_CONF_PATH"
 	    sed -i "s|LoadModule dav_fs_module modules|#LoadModule dav_fs_module modules|" "$HTTP_CONF_PATH"
 	    sed -i "s|LoadModule proxy_ajp_module modules|#LoadModule proxy_ajp_module modules|" "$HTTP_CONF_PATH"
-    
+	    Service httpd restart
+    fi
 fi
 
 # Postfix add missing tables apply only to centos 7 currently
 
 if [[ "$OS" = "CentOs" ]]; then
     if [[ "$VER" == "7" ]]; then
-    
     # get mysql root password, check it works or ask it
     mysqlpassword=$(cat /etc/sentora/panel/cnf/db.php | grep "pass =" | sed -s "s|.*pass \= '\(.*\)';.*|\1|")
     while ! mysql -u root -p$mysqlpassword -e ";" ; do
@@ -78,8 +79,6 @@ if [[ "$OS" = "CentOs" ]]; then
     echo -e "Connection mysql ok"
     wget -nv -O  patch_1.0.2.sql https://raw.githubusercontent.com/MBlagui/sentora-installers/1.0.2/patch_1.0.2.sql #need url
     mysql -u root -p"$mysqlpassword" < patch_1.0.2.sql
-    
     fi
 fi
-
 echo "We are done system patched updater $SENTORA_UPDATER_VERSION"
