@@ -52,7 +52,7 @@ if [[ "$OS" = "CentOs" ]]; then
         disable_file /etc/httpd/conf.modules.d/01-cgi.conf
         disable_file /etc/httpd/conf.modules.d/00-lua.conf
         disable_file /etc/httpd/conf.modules.d/00-dav.conf
-        Service httpd restart
+        service httpd restart
     else
         disable_file /etc/httpd/conf.d/welcome.conf
         disable_file /etc/httpd/conf.d/webalizer.conf
@@ -62,7 +62,7 @@ if [[ "$OS" = "CentOs" ]]; then
 	    sed -i "s|LoadModule dav_module modules|#LoadModule dav_module modules|" "$HTTP_CONF_PATH"
 	    sed -i "s|LoadModule dav_fs_module modules|#LoadModule dav_fs_module modules|" "$HTTP_CONF_PATH"
 	    sed -i "s|LoadModule proxy_ajp_module modules|#LoadModule proxy_ajp_module modules|" "$HTTP_CONF_PATH"
-	    Service httpd restart
+	    service httpd restart
     fi
 fi
 
