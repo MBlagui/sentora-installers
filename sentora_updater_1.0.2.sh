@@ -39,6 +39,7 @@ chmod 777 /etc/sentora/panel/modules/ftp_management/code/controller.ext.php
 # CGI Patch
 disable_file() {
     mv "$1" "$1_disabled_by_sentora" &> /dev/null
+}
 
 if [[ "$OS" = "CentOs" ]]; then
     HTTP_CONF_PATH="/etc/httpd/conf/httpd.conf"
