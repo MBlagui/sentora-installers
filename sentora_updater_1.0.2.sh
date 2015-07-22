@@ -82,4 +82,4 @@ if [[ "$OS" = "CentOs" ]]; then
     fi
 fi
 
-echo -e "We are done system patched"
+echo "We are done system patched updater $SENTORA_UPDATER_VERSION"
