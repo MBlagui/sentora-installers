@@ -4,6 +4,12 @@ SENTORA_UPDATER_VERSION="1.0.2"
 PANEL_PATH="/etc/sentora"
 PANEL_DATA="/var/sentora"
 
+# Check if the user is 'root' before updating
+if [ $UID -ne 0 ]; then
+    echo "Install failed: you must be logged in as 'root' to install."
+    echo "Use command 'sudo -i', then enter root password and then try again."
+    exit 1
+fi
 # Ensure the OS is compatible with the launcher
 if [ -f /etc/centos-release ]; then
     OS="CentOs"
